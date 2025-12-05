@@ -17,6 +17,7 @@ import { AboutPage } from './pages/AboutPage';
 import { TermsPage } from './pages/TermsPage';
 import { PrivacyPage } from './pages/PrivacyPage';
 import { Footer } from './components/layout/Footer';
+import { ProductDetailsPage } from './pages/ProductDetailsPage';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
                     <FloatingCartButton />
                   </>
                 } />
+                <Route path="/product/:id" element={<ProductDetailsPage />} />
                 <Route path="/checkout" element={<CheckoutPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/reset-password" element={<ResetPasswordPage />} />
