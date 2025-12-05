@@ -28,6 +28,14 @@ export const Header: React.FC = () => {
         navigate('/');
     };
 
+    const scrollToFooter = () => {
+        const footer = document.getElementById('footer');
+        if (footer) {
+            footer.scrollIntoView({ behavior: 'smooth' });
+            setIsMobileMenuOpen(false);
+        }
+    };
+
     return (
         <>
             <header
@@ -35,8 +43,26 @@ export const Header: React.FC = () => {
                     }`}
             >
                 <div className="container mx-auto px-4 flex items-center justify-between">
-                    {/* Logo */}
-                    <Link to="/" className="flex items-center gap-2">
+                    {/* Mobile Menu Button & Logo */}
+                    <div className="flex items-center gap-4 md:hidden">
+                        <button
+                            className="p-1 text-[var(--color-brand-text)]"
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        >
+                            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                        </button>
+                        <Link to="/" className="flex items-center gap-2">
+                            <div className="p-1.5 bg-[var(--color-brand-primary)] rounded-full text-white">
+                                <ShoppingBag size={20} />
+                            </div>
+                            <span className="text-lg font-bold text-[var(--color-brand-secondary)]">
+                                Dulces Marce
+                            </span>
+                        </Link>
+                    </div>
+
+                    {/* Desktop Logo */}
+                    <Link to="/" className="hidden md:flex items-center gap-2">
                         <div className="p-2 bg-[var(--color-brand-primary)] rounded-full text-white">
                             <ShoppingBag size={24} />
                         </div>
@@ -49,7 +75,12 @@ export const Header: React.FC = () => {
                     <nav className="hidden md:flex items-center gap-8">
                         <Link to="/" className="text-[var(--color-brand-text)] hover:text-[var(--color-brand-primary)] font-medium transition-colors">Inicio</Link>
                         <a href="#productos" className="text-[var(--color-brand-text)] hover:text-[var(--color-brand-primary)] font-medium transition-colors">Productos</a>
-                        <a href="#contacto" className="text-[var(--color-brand-text)] hover:text-[var(--color-brand-primary)] font-medium transition-colors">Contacto</a>
+                        <button
+                            onClick={scrollToFooter}
+                            className="text-[var(--color-brand-text)] hover:text-[var(--color-brand-primary)] font-medium transition-colors"
+                        >
+                            Contacto
+                        </button>
 
                         {/* Auth Button / User Menu */}
                         <div className="relative ml-4 border-l pl-8 border-gray-200">
@@ -113,13 +144,21 @@ export const Header: React.FC = () => {
                         </div>
                     </nav>
 
-                    {/* Mobile Menu Button */}
-                    <button
-                        className="md:hidden p-2 text-[var(--color-brand-text)]"
-                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                    >
-                        {isMobileMenuOpen ? <X /> : <Menu />}
-                    </button>
+                    {/* Mobile Right Icons (User & Cart placeholder if needed) */}
+                    <div className="flex items-center gap-3 md:hidden">
+                        {!isAuthenticated ? (
+                            <button
+                                onClick={() => setIsAuthModalOpen(true)}
+                                className="p-2 text-[var(--color-brand-text)]"
+                            >
+                                <UserIcon size={24} />
+                            </button>
+                        ) : (
+                            <Link to="/profile" className="w-8 h-8 bg-[var(--color-brand-primary)] rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                {user?.name?.charAt(0).toUpperCase()}
+                            </Link>
+                        )}
+                    </div>
                 </div>
 
                 {/* Mobile Menu */}
@@ -174,7 +213,7 @@ export const Header: React.FC = () => {
 
                                 <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-medium text-[var(--color-brand-text)]">Inicio</Link>
                                 <a href="#productos" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-medium text-[var(--color-brand-text)]">Productos</a>
-                                <a href="#contacto" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-medium text-[var(--color-brand-text)]">Contacto</a>
+                                <button onClick={scrollToFooter} className="text-lg font-medium text-[var(--color-brand-text)] text-left">Contacto</button>
                             </div>
                         </motion.div>
                     )}
