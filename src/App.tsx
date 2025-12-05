@@ -17,7 +17,6 @@ import { AboutPage } from './pages/AboutPage';
 import { TermsPage } from './pages/TermsPage';
 import { PrivacyPage } from './pages/PrivacyPage';
 import { Footer } from './components/layout/Footer';
-import { AuthModal } from './components/auth/AuthModal'; // Assuming path for AuthModal
 
 function App() {
   return (
@@ -55,7 +54,6 @@ function App() {
             </div>
             <Footer />
             <CartModal />
-            <AuthModal />
           </div>
         </Router>
       </AuthProvider>
