@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, Filter, ArrowUpDown } from 'lucide-react';
+import { Search, ArrowUpDown } from 'lucide-react';
 import { products } from '../../data/products';
 import { ProductCard } from './ProductCard';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -86,8 +86,8 @@ export const ProductGrid: React.FC = () => {
                                     key={cat.id}
                                     onClick={() => setSelectedCategory(cat.id)}
                                     className={`px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${selectedCategory === cat.id
-                                            ? 'bg-[var(--color-brand-primary)] text-white shadow-md'
-                                            : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+                                        ? 'bg-[var(--color-brand-primary)] text-white shadow-md'
+                                        : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
                                         }`}
                                 >
                                     {cat.label}
@@ -119,8 +119,8 @@ export const ProductGrid: React.FC = () => {
                                 key={cat.id}
                                 onClick={() => setSelectedCategory(cat.id)}
                                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap flex-shrink-0 ${selectedCategory === cat.id
-                                        ? 'bg-[var(--color-brand-primary)] text-white shadow-md'
-                                        : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+                                    ? 'bg-[var(--color-brand-primary)] text-white shadow-md'
+                                    : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
                                     }`}
                             >
                                 {cat.label}

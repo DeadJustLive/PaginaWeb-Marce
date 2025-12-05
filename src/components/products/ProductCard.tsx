@@ -3,12 +3,15 @@ import { motion } from 'framer-motion';
 import { ShoppingCart, Heart } from 'lucide-react';
 import type { Product } from '../../data/products';
 import { Button } from '../ui/Button';
+import { useCart } from '../../context/CartContext';
 
 interface ProductCardProps {
     product: Product;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+    const { addToCart } = useCart();
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -50,7 +53,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                     <span className="text-2xl font-bold text-[var(--color-brand-primary)]">
                         ${product.price.toLocaleString('es-CL')}
                     </span>
-                    <Button size="sm" leftIcon={<ShoppingCart size={18} />}>
+                    <Button
+                        size="sm"
+                        leftIcon={<ShoppingCart size={18} />}
+                        onClick={() => addToCart(product)}
+                    >
                         Agregar
                     </Button>
                 </div>
