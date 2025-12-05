@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-primary: #E68D8D;
+  --color-brand-secondary: #8D6E63;
+  --color-brand-accent: #FFD180;
+  --color-brand-background: #FFF8F6;
+  --color-brand-text: #4E342E;
+}
+
+body {
+  background-color: var(--color-brand-background);
+  color: var(--color-brand-text);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Smooth scrolling for the whole page */
+html {
+  scroll-behavior: smooth;
+}
