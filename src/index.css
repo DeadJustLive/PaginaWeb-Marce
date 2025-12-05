@@ -16,5 +16,7 @@ body {
 
 /* Smooth scrolling for the whole page */
 html {
+  /* Fluid font size: 14px at 350px viewport -> 16px at 1200px viewport */
+  font-size: clamp(14px, 0.875rem + 0.25vw, 16px);
   scroll-behavior: smooth;
 }

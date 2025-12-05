@@ -64,7 +64,7 @@ export const ProductGrid: React.FC = () => {
                 </div>
 
                 {/* Controls Bar */}
-                <div className="bg-gray-50 p-4 rounded-2xl shadow-sm mb-12 border border-gray-100">
+                <div className="bg-gray-50 p-4 rounded-2xl shadow-sm mb-8 md:mb-12 border border-gray-100">
                     <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
 
                         {/* Search */}
@@ -132,7 +132,7 @@ export const ProductGrid: React.FC = () => {
                 <AnimatePresence mode='popLayout'>
                     <motion.div
                         layout
-                        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
+                        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6"
                     >
                         {filteredProducts.length > 0 ? (
                             filteredProducts.map((product) => (
