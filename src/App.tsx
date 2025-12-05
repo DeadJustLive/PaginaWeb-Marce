@@ -9,6 +9,8 @@ import { FloatingCartButton } from './components/cart/FloatingCartButton';
 import { CheckoutPage } from './pages/CheckoutPage';
 import { AuthPage } from './pages/AuthPage';
 import { ProfilePage } from './pages/ProfilePage';
+import { RegisterPage } from './pages/RegisterPage';
+import { ResetPasswordPage } from './pages/ResetPasswordPage';
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
                 <Route path="/checkout" element={<CheckoutPage />} />
                 <Route path="/auth" element={<AuthPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/reset-password" element={<ResetPasswordPage />} />
               </Routes>
             </div>
 

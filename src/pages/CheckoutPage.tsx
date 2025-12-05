@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/ui/Button';
-import { ArrowLeft, Truck, CreditCard, User, MapPin, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Truck, CreditCard, User, MapPin, CheckCircle, Trash2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 type DeliveryMethod = 'pickup' | 'starken-branch' | 'starken-home';
 
 export const CheckoutPage: React.FC = () => {
     const { items, cartTotal, checkoutData, setCheckoutData, clearCart } = useCart();
     const { user, isAuthenticated } = useAuth();
+    const navigate = useNavigate();
 
     // Skip step 1 if logged in and not guest
     const [step, setStep] = useState<1 | 2 | 3>(isAuthenticated && !user?.isGuest ? 2 : 1);
@@ -450,6 +451,21 @@ export const CheckoutPage: React.FC = () => {
                                 <span>Total</span>
                                 <span>${finalTotal.toLocaleString('es-CL')}</span>
                             </div>
+                        </div>
+
+                        <div className="mt-6 pt-6 border-t border-gray-100">
+                            <button
+                                onClick={() => {
+                                    if (window.confirm('¿Estás seguro de que quieres cancelar la compra? Se vaciará tu carrito.')) {
+                                        clearCart();
+                                        navigate('/');
+                                    }
+                                }}
+                                className="w-full py-3 text-red-500 font-medium hover:bg-red-50 rounded-xl transition-colors flex items-center justify-center gap-2"
+                            >
+                                <Trash2 size={18} />
+                                Cancelar Compra
+                            </button>
                         </div>
                     </div>
                 </div>

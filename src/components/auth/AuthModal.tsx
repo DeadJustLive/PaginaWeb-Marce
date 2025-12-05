@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
+import { X, Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 interface AuthModalProps {
     isOpen: boolean;
@@ -10,25 +11,27 @@ interface AuthModalProps {
 }
 
 export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
-    const [isLogin, setIsLogin] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
-    const { login, register } = useAuth();
+    const [isForgotPassword, setIsForgotPassword] = useState(false);
+    const { login, requestPasswordReset } = useAuth();
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         email: '',
-        password: '',
-        name: ''
+        password: ''
     });
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            if (isLogin) {
-                await login(formData.email, formData.password);
+            if (isForgotPassword) {
+                await requestPasswordReset(formData.email);
+                onClose();
+                navigate('/reset-password', { state: { email: formData.email } });
             } else {
-                await register(formData.email, formData.password, formData.name);
+                await login(formData.email, formData.password);
+                onClose();
             }
-            onClose();
         } catch (error) {
             console.error('Auth error:', error);
         }
@@ -62,33 +65,18 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                             <X size={20} />
                         </button>
                         <h2 className="text-2xl font-bold mb-2">
-                            {isLogin ? '¡Hola de nuevo!' : '¡Bienvenido!'}
+                            {isForgotPassword ? 'Recuperar Contraseña' : '¡Hola de nuevo!'}
                         </h2>
                         <p className="text-white/80">
-                            {isLogin ? 'Ingresa a tu cuenta para continuar' : 'Crea una cuenta para gestionar tus pedidos'}
+                            {isForgotPassword
+                                ? 'Ingresa tu email para recibir un código'
+                                : 'Ingresa a tu cuenta para continuar'}
                         </p>
                     </div>
 
                     {/* Form */}
                     <div className="p-8">
                         <form onSubmit={handleSubmit} className="space-y-4">
-                            {!isLogin && (
-                                <div className="space-y-2">
-                                    <label className="text-sm font-medium text-gray-700">Nombre Completo</label>
-                                    <div className="relative">
-                                        <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                                        <input
-                                            type="text"
-                                            required
-                                            className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[var(--color-brand-primary)] outline-none transition-all"
-                                            placeholder="Tu nombre"
-                                            value={formData.name}
-                                            onChange={e => setFormData({ ...formData, name: e.target.value })}
-                                        />
-                                    </div>
-                                </div>
-                            )}
-
                             <div className="space-y-2">
                                 <label className="text-sm font-medium text-gray-700">Email</label>
                                 <div className="relative">
@@ -104,51 +92,65 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                                 </div>
                             </div>
 
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium text-gray-700">Contraseña</label>
-                                <div className="relative">
-                                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                                    <input
-                                        type={showPassword ? "text" : "password"}
-                                        required
-                                        className="w-full pl-12 pr-12 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[var(--color-brand-primary)] outline-none transition-all"
-                                        placeholder="••••••••"
-                                        value={formData.password}
-                                        onChange={e => setFormData({ ...formData, password: e.target.value })}
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                                    >
-                                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                                    </button>
+                            {!isForgotPassword && (
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium text-gray-700">Contraseña</label>
+                                    <div className="relative">
+                                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                                        <input
+                                            type={showPassword ? "text" : "password"}
+                                            required
+                                            className="w-full pl-12 pr-12 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[var(--color-brand-primary)] outline-none transition-all"
+                                            placeholder="••••••••"
+                                            value={formData.password}
+                                            onChange={e => setFormData({ ...formData, password: e.target.value })}
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                        >
+                                            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
+                            )}
 
                             <Button className="w-full py-4 text-lg shadow-lg mt-6">
-                                {isLogin ? 'Iniciar Sesión' : 'Registrarme'}
+                                {isForgotPassword ? 'Enviar Código' : 'Iniciar Sesión'}
                             </Button>
                         </form>
 
                         <div className="mt-6 text-center space-y-4">
-                            {isLogin && (
-                                <button className="text-[var(--color-brand-primary)] hover:underline text-sm font-medium">
-                                    ¿Olvidaste tu contraseña?
+                            {!isForgotPassword ? (
+                                <>
+                                    <button className="text-[var(--color-brand-primary)] hover:underline text-sm font-medium" onClick={() => setIsForgotPassword(true)}>
+                                        ¿Olvidaste tu contraseña?
+                                    </button>
+
+                                    <div className="pt-4 border-t border-gray-100">
+                                        <p className="text-gray-600 text-sm mb-2">
+                                            ¿No tienes cuenta?
+                                        </p>
+                                        <button
+                                            onClick={() => {
+                                                onClose();
+                                                navigate('/register');
+                                            }}
+                                            className="text-[var(--color-brand-primary)] font-bold hover:underline flex items-center justify-center gap-1 mx-auto"
+                                        >
+                                            Crear Cuenta <ArrowRight size={16} />
+                                        </button>
+                                    </div>
+                                </>
+                            ) : (
+                                <button
+                                    onClick={() => setIsForgotPassword(false)}
+                                    className="text-gray-500 hover:text-gray-700 text-sm font-medium"
+                                >
+                                    Volver al inicio de sesión
                                 </button>
                             )}
-
-                            <div className="pt-4 border-t border-gray-100">
-                                <p className="text-gray-600 text-sm mb-2">
-                                    {isLogin ? '¿No tienes cuenta?' : '¿Ya tienes cuenta?'}
-                                </p>
-                                <button
-                                    onClick={() => setIsLogin(!isLogin)}
-                                    className="text-[var(--color-brand-primary)] font-bold hover:underline"
-                                >
-                                    {isLogin ? 'Crear Cuenta' : 'Iniciar Sesión'}
-                                </button>
-                            </div>
                         </div>
                     </div>
                 </motion.div>
