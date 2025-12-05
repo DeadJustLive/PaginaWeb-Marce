@@ -23,7 +23,7 @@ function App() {
   return (
     <CartProvider>
       <AuthProvider>
-        <Router>
+        <Router basename="/PaginaWeb-Marce">
           <div className="min-h-screen bg-gray-50 flex flex-col">
             <Header />
             <div className="flex-grow">
